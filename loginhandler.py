@@ -8,8 +8,10 @@ class LoginHandler:
         self.password: str = password
 
 
-    def register(self, newCredentials) -> bool:
+    def register(self) -> bool:
         try:
+            newCredentials: dict = {"username": self.username, "password": self.password}
+
             with open(self.jsonFilePath, "r") as file:
                 data: json = json.loads(file.read())
 
@@ -33,7 +35,7 @@ class LoginHandler:
             return False
 
 
-    def deregister(self, username: str, password: str) -> bool:
+    def deregister(self) -> bool:
         try:
             with open(self.jsonFilePath, "r") as file:
                 data: json = json.loads(file.read())
@@ -42,7 +44,7 @@ class LoginHandler:
 
             # LOOKS FOR USERNAME IF FOUND IT WILL REMOVE
             for credential in data['credentials']:
-                if username == credential['username'] and password == credential['password']:
+                if self.username == credential['username'] and self.password == credential['password']:
                     data['credentials'].remove(credential)
                     usernameFound: bool = True
                     break
@@ -53,7 +55,7 @@ class LoginHandler:
                     json.dump(data, file, indent=4)
 
             else:
-                print(colored(f"[-] Username: {username}, Password: {password} not registered.", "red"))
+                print(colored(f"[-] Username: {self.username}, Password: {self.password} not registered.", "red"))
                 return False
 
         except Exception as error:
