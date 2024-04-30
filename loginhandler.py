@@ -1,11 +1,12 @@
 import json
+import hashlib
 from termcolor import colored
 
 class LoginHandler:
     def __init__(self, *, jsonFilePath="credentials.json", username: str, password: str) -> None:
         self.jsonFilePath: str = jsonFilePath
         self.username: str = username
-        self.password: str = password
+        self.password: str = hashlib.sha256(password.encode()).hexdigest()
 
 
     def register(self) -> bool:
@@ -81,4 +82,3 @@ class LoginHandler:
         except Exception as error:
             print(colored(f"[-] Check error, {error}.", "red"))
             return False
-
